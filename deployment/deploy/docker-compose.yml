@@ -1,0 +1,67 @@
+version: "3.9"
+
+networks:
+    backend:
+        external: true
+
+services:
+  postgres_db:
+    container_name: postgresdb
+    image: postgres:13
+    environment:
+        POSTGRES_USER: "postgres"
+        POSTGRES_PASSWORD: "1234"
+        POSTGRES_DB: "dvdrental"
+    ports:
+        - "5432:5432"
+    networks:
+        - "backend"
+
+  postgres_seed:
+    container_name: postgresseed
+    image: postgres:13
+    environment:
+        POSTGRES_HOST_AUTH_METHOD: "trust"
+        PGPASSWORD: "1234"
+    volumes:
+        - ./postgres/dvdrental.tar:/tmp/dvdrental.tar:ro
+    entrypoint: [ "bash", "-c", "sleep 10 && pg_restore -h postgresdb -U postgres -d dvdrental /tmp/dvdrental.tar" ]
+    restart: "no"
+    networks:
+        - "backend"
+    depends_on:
+        - "postgres_db"
+
+  adminer:
+    container_name: adminer
+    image: adminer
+    networks:
+        - "backend"
+    ports:
+        - "${UI_PORT?}:8080"
+  
+  mongo_db:
+    container_name: mongodb
+    image: mongo:latest
+    environment:
+        MONGO_INITDB_ROOT_USERNAME: "mongo"
+        MONGO_INITDB_ROOT_PASSWORD: "1234"
+    ports:
+        - 27017:27017
+    networks:
+        - "backend"
+    depends_on:
+       - "postgres_db"
+       - "postgres_seed"
+
+  java:
+    build: ./crud_operations
+    container_name: crud_operations
+    volumes:
+        - ./crud_operations/logs/crud.log:/tmp/crud.log:rw
+    restart: "no"
+    networks:
+      - "backend"
+    depends_on:
+      - "postgres_db"
+      - "mongo_db"
