@@ -23,32 +23,54 @@ public class Read {
 
     private void read() {
         System.out.println("a. Gesamtanzahl der verfügbaren Filme");
-        System.out.println("--> Query: Read.java, Z. 28-29");
+        System.out.println("--> Query: Read.java, Z. 28-70");
 
         MongoCollection<Document> collection = getDbmongo().getCollection("inventory");
         System.out.println("    " + collection.countDocuments());
 
-        System.out.println("b. Anzahl der unterschiedlichen Filme je Standort"); /* TODO: Falsche Ausgaben: -> Should be 1: 759, 2: 762 */
+        System.out.println("b. Anzahl der unterschiedlichen Filme je Standort"); 
         System.out.println("--> Query: Read.java, Z. 34-53");
 
-        collection = getDbmongo().getCollection("inventory");
+        collection = dbmongo.getCollection("inventory");
 
-        // Response Object
-        Consumer<Document> processBlock = document -> System.out.println("    " + document.toJson());
+        pipeline = Arrays.asList(
+                        new Document().append("$project",
+                                        new Document().append("film_id", "$film_id").append("store_id", "$store_id").append("_id", 0)),
+                        new Document().append("$group",
+                                        new Document().append("_id", new BsonNull()).append("distinct",
+                                                        new Document().append("$addToSet", "$$ROOT"))),
+                        new Document().append("$unwind",
+                                        new Document().append("path", "$distinct").append("preserveNullAndEmptyArrays", false)),
+                        new Document().append("$replaceRoot", new Document().append("newRoot", "$distinct")));
 
-        // Build query
-        List<? extends Bson> pipeline = Arrays.asList(
-                new Document().append("$group",
-                        new Document().append("_id", new Document().append("store_id", "$store_id"))
-                                .append("COUNT(film_id)", new Document().append("$sum", 1))),
-                new Document().append("$project", new Document().append("store_id", "$_id.store_id")
-                        .append("COUNT(film_id)", "$COUNT(film_id)").append("_id", 0)));
+        // execute query with aggregate function
+        AggregateIterable<Document> test = collection.aggregate(pipeline);
+        MongoCursor<Document> iterator = test.iterator();
+        HashMap<String, Integer> filmCounterPerLocation = new HashMap<String, Integer>();
 
-        // Execute query with aggregate function
-        collection.aggregate(pipeline).allowDiskUse(true).forEach(processBlock);
+        while (iterator.hasNext()) {
+                Document next = iterator.next();
+                String film = next.get("film_id").toString();
+                String store = next.get("store_id").toString();
+                if (filmCounterPerLocation.containsKey(store)) {
+                        int counter = filmCounterPerLocation.get(store);
+                        counter++;
+                        filmCounterPerLocation.put(store, filmCounterPerLocation.get(store) + 1);
+
+                } else {
+                        filmCounterPerLocation.put(store, 1);
+
+                }
+
+        }
+        for (String key : filmCounterPerLocation.keySet()) {
+                int counter = filmCounterPerLocation.get(key);
+                System.out.println("Store ID :" + key);
+                System.out.println("Filme :" + counter);
+        }
 
         System.out.println("c. Die Vor- und Nachnamen der 10 Schauspieler mit den meisten Filmen, absteigend sortiert");
-        System.out.println("--> Query: Read.java, Z. 58-114");
+        System.out.println("--> Query: Read.java, Z. 75-114");
 
         collection = getDbmongo().getCollection("film_actor");
         pipeline = Arrays.asList(
@@ -109,7 +131,7 @@ public class Read {
                 .forEach(processBlock);
 
         System.out.println("d. Die Erlöse je Mitarbeiter");
-        System.out.println("--> Query: Read.java, Z. 119-147");
+        System.out.println("--> Query: Read.java, Z. 136-165");
 
         collection = getDbmongo().getCollection("payment");
 
@@ -142,7 +164,7 @@ public class Read {
                 .forEach(processBlock);
 
         System.out.println("e. Die IDs der 10 Kunden mit den meisten Entleihungen");
-        System.out.println("--> Query: Read.java, Z. 152-180");
+        System.out.println("--> Query: Read.java, Z. 169-197");
 
         collection = getDbmongo().getCollection("rental");
 
@@ -175,7 +197,7 @@ public class Read {
                 .forEach(processBlock);
 
         System.out.println("f. Die Vor- und Nachnamen sowie die Niederlassung der 10 Kunden, die das meiste Geld ausgegeben haben");
-        System.out.println("--> Query: Read.java, Z. 185-251");
+        System.out.println("--> Query: Read.java, Z. 202-268");
 
         collection = getDbmongo().getCollection("payment");
         pipeline = Arrays.asList(
@@ -246,7 +268,7 @@ public class Read {
                 .forEach(processBlock);
 
         System.out.println("g. Die 10 meistgesehenen Filme unter Angabe des Titels, absteigend sortiert");
-        System.out.println("--> Query: Read.java, Z. 254-380");
+        System.out.println("--> Query: Read.java, Z. 273-332");
 
         collection = getDbmongo().getCollection("rental");
 
@@ -309,8 +331,8 @@ public class Read {
                 .allowDiskUse(true)
                 .forEach(processBlock);
 
-        System.out.println("h. Die 3 meistgesehenen Filmkategorien"); /* TODO: Hier wäre der Name der Kategorie sinnvoll */
-        System.out.println("--> Query: Read.java, Z. 318-383");
+        System.out.println("h. Die 3 meistgesehenen Filmkategorien"); 
+        System.out.println("--> Query: Read.java, Z. 337-400");
 
         collection = getDbmongo().getCollection("rental");
 
@@ -378,11 +400,7 @@ public class Read {
                 .forEach(processBlock);
 
         System.out.println("i. Eine Sicht auf die Kunden mit allen relevanten Informationen wie im View „customer_list“ der vorhandenen Postgres-Datenbank");
-        System.out.println("--> Query: Read.java, Z. ");
-        /*
-        TODO: Ersten 5 Zeilen bei View in Read ausgeben -> Hat er in der letzten Vorlesung gesagt
-        TODO: Zeilen für den Code angeben
-         */
+        System.out.println("--> Query: Read.java, Z.404 - 488");
         pipeline = Arrays.asList(
                 new Document()
                         .append("$project", new Document()
@@ -462,6 +480,12 @@ public class Read {
         collection.aggregate(pipeline)
                 .allowDiskUse(false)
                 .forEach(processBlock);
+
+        System.out.println("Show View");
+	collection = dbmongo.getCollection("customer_list");        
+        Document query = new Document();
+        int limit = 5;
+        collection.find(query).limit(limit).forEach(processBlock);
     }
 
     /* Getter and Setter */
