@@ -1,8 +1,10 @@
+import java.awt.*;
 import java.text.SimpleDateFormat;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Log from: " +  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()));
+        System.out.println("TEST2");
         System.out.println("CRUD operations started\n");
 
         System.out.println("Create operations started");

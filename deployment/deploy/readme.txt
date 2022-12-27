@@ -5,7 +5,6 @@ Gianluca Dangelo
 Lara Laskowsky
 
 Aufsetzen des Projekts: Gianluca Dangelo
-ETL: Gianluca Dangelo
 Create, Read: Gianluca Dangelo
 Update, Delete: Lara Laskowsky
 Docker-Container: Lara Laskowsky

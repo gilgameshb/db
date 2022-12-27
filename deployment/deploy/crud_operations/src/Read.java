@@ -1,11 +1,10 @@
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.*;
+import org.bson.BsonNull;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -28,20 +27,21 @@ public class Read {
         MongoCollection<Document> collection = getDbmongo().getCollection("inventory");
         System.out.println("    " + collection.countDocuments());
 
-        System.out.println("b. Anzahl der unterschiedlichen Filme je Standort"); 
+        System.out.println("b. Anzahl der unterschiedlichen Filme je Standort");
         System.out.println("--> Query: Read.java, Z. 34-53");
 
         collection = dbmongo.getCollection("inventory");
+        Consumer<Document> processBlock = document -> System.out.println("    " + document.toJson());
 
-        pipeline = Arrays.asList(
-                        new Document().append("$project",
-                                        new Document().append("film_id", "$film_id").append("store_id", "$store_id").append("_id", 0)),
-                        new Document().append("$group",
-                                        new Document().append("_id", new BsonNull()).append("distinct",
-                                                        new Document().append("$addToSet", "$$ROOT"))),
-                        new Document().append("$unwind",
-                                        new Document().append("path", "$distinct").append("preserveNullAndEmptyArrays", false)),
-                        new Document().append("$replaceRoot", new Document().append("newRoot", "$distinct")));
+        List<? extends Bson> pipeline = Arrays.asList(
+                new Document().append("$project",
+                        new Document().append("film_id", "$film_id").append("store_id", "$store_id").append("_id", 0)),
+                new Document().append("$group",
+                        new Document().append("_id", new BsonNull()).append("distinct",
+                                new Document().append("$addToSet", "$$ROOT"))),
+                new Document().append("$unwind",
+                        new Document().append("path", "$distinct").append("preserveNullAndEmptyArrays", false)),
+                new Document().append("$replaceRoot", new Document().append("newRoot", "$distinct")));
 
         // execute query with aggregate function
         AggregateIterable<Document> test = collection.aggregate(pipeline);
@@ -49,24 +49,24 @@ public class Read {
         HashMap<String, Integer> filmCounterPerLocation = new HashMap<String, Integer>();
 
         while (iterator.hasNext()) {
-                Document next = iterator.next();
-                String film = next.get("film_id").toString();
-                String store = next.get("store_id").toString();
-                if (filmCounterPerLocation.containsKey(store)) {
-                        int counter = filmCounterPerLocation.get(store);
-                        counter++;
-                        filmCounterPerLocation.put(store, filmCounterPerLocation.get(store) + 1);
+            Document next = iterator.next();
+            String film = next.get("film_id").toString();
+            String store = next.get("store_id").toString();
+            if (filmCounterPerLocation.containsKey(store)) {
+                int counter = filmCounterPerLocation.get(store);
+                counter++;
+                filmCounterPerLocation.put(store, filmCounterPerLocation.get(store) + 1);
 
-                } else {
-                        filmCounterPerLocation.put(store, 1);
+            } else {
+                filmCounterPerLocation.put(store, 1);
 
-                }
+            }
 
         }
         for (String key : filmCounterPerLocation.keySet()) {
-                int counter = filmCounterPerLocation.get(key);
-                System.out.println("Store ID :" + key);
-                System.out.println("Filme :" + counter);
+            int counter = filmCounterPerLocation.get(key);
+            System.out.println("Store ID :" + key);
+            System.out.println("Filme :" + counter);
         }
 
         System.out.println("c. Die Vor- und Nachnamen der 10 Schauspieler mit den meisten Filmen, absteigend sortiert");
@@ -331,7 +331,7 @@ public class Read {
                 .allowDiskUse(true)
                 .forEach(processBlock);
 
-        System.out.println("h. Die 3 meistgesehenen Filmkategorien"); 
+        System.out.println("h. Die 3 meistgesehenen Filmkategorien");
         System.out.println("--> Query: Read.java, Z. 337-400");
 
         collection = getDbmongo().getCollection("rental");
@@ -477,12 +477,13 @@ public class Read {
                         )
         );
 
+        getDbmongo().createView("customer_list","customer", pipeline);
         collection.aggregate(pipeline)
                 .allowDiskUse(false)
                 .forEach(processBlock);
 
         System.out.println("Show View");
-	collection = dbmongo.getCollection("customer_list");        
+        collection = getDbmongo().getCollection("customer_list");
         Document query = new Document();
         int limit = 5;
         collection.find(query).limit(limit).forEach(processBlock);
