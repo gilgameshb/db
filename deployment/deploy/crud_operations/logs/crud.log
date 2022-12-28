@@ -1,4 +1,4 @@
-Log from: 2022-12-27 23:48:40
+Log from: 2022-12-28 10:25:46
 CRUD operations started
 
 Create operations started
@@ -50,8 +50,8 @@ c. Die Vor- und Nachnamen der 10 Schauspieler mit den meisten Filmen, absteigend
     {"film_actor": {"actor_id": "181"}, "actor": {"first_name": "Matthew", "last_name": "Carrey"}, "COUNT(film_actor᎐film_id)": 39}
     {"film_actor": {"actor_id": "23"}, "actor": {"first_name": "Sandra", "last_name": "Kilmer"}, "COUNT(film_actor᎐film_id)": 37}
     {"film_actor": {"actor_id": "81"}, "actor": {"first_name": "Scarlett", "last_name": "Damon"}, "COUNT(film_actor᎐film_id)": 36}
-    {"film_actor": {"actor_id": "106"}, "actor": {"first_name": "Groucho", "last_name": "Dunst"}, "COUNT(film_actor᎐film_id)": 35}
     {"film_actor": {"actor_id": "13"}, "actor": {"first_name": "Uma", "last_name": "Wood"}, "COUNT(film_actor᎐film_id)": 35}
+    {"film_actor": {"actor_id": "37"}, "actor": {"first_name": "Val", "last_name": "Bolger"}, "COUNT(film_actor᎐film_id)": 35}
     {"film_actor": {"actor_id": "144"}, "actor": {"first_name": "Angela", "last_name": "Witherspoon"}, "COUNT(film_actor᎐film_id)": 35}
     {"film_actor": {"actor_id": "158"}, "actor": {"first_name": "Vivien", "last_name": "Basinger"}, "COUNT(film_actor᎐film_id)": 35}
 d. Die Erlöse je Mitarbeiter
@@ -62,14 +62,14 @@ e. Die IDs der 10 Kunden mit den meisten Entleihungen
 --> Query: Read.java, Z. 163-191
     {"customer_id": "148", "COUNT(*)": 46}
     {"customer_id": "526", "COUNT(*)": 45}
-    {"customer_id": "144", "COUNT(*)": 42}
     {"customer_id": "236", "COUNT(*)": 42}
+    {"customer_id": "144", "COUNT(*)": 42}
     {"customer_id": "75", "COUNT(*)": 41}
     {"customer_id": "197", "COUNT(*)": 40}
     {"customer_id": "469", "COUNT(*)": 40}
+    {"customer_id": "178", "COUNT(*)": 39}
     {"customer_id": "468", "COUNT(*)": 39}
     {"customer_id": "137", "COUNT(*)": 39}
-    {"customer_id": "178", "COUNT(*)": 39}
 f. Die Vor- und Nachnamen sowie die Niederlassung der 10 Kunden, die das meiste Geld ausgegeben haben
 --> Query: Read.java, Z. 196-262
     {"customer": {"customer_id": "148", "first_name": "Eleanor", "last_name": "Hunt", "store_id": "1"}, "SUM(payment᎐amount_double)": 211.55}
@@ -86,14 +86,14 @@ g. Die 10 meistgesehenen Filme unter Angabe des Titels, absteigend sortiert
 --> Query: Read.java, Z. 267-326
     {"inventory": {"film_id": "103"}, "film": {"title": "Bucket Brotherhood"}, "COUNT(*)": 34}
     {"inventory": {"film_id": "738"}, "film": {"title": "Rocketeer Mother"}, "COUNT(*)": 33}
-    {"inventory": {"film_id": "382"}, "film": {"title": "Grit Clockwork"}, "COUNT(*)": 32}
-    {"inventory": {"film_id": "730"}, "film": {"title": "Ridgemont Submarine"}, "COUNT(*)": 32}
     {"inventory": {"film_id": "331"}, "film": {"title": "Forward Temple"}, "COUNT(*)": 32}
-    {"inventory": {"film_id": "767"}, "film": {"title": "Scalawag Duck"}, "COUNT(*)": 32}
+    {"inventory": {"film_id": "730"}, "film": {"title": "Ridgemont Submarine"}, "COUNT(*)": 32}
     {"inventory": {"film_id": "489"}, "film": {"title": "Juggler Hardly"}, "COUNT(*)": 32}
-    {"inventory": {"film_id": "891"}, "film": {"title": "Timberland Sky"}, "COUNT(*)": 31}
-    {"inventory": {"film_id": "621"}, "film": {"title": "Network Peak"}, "COUNT(*)": 31}
+    {"inventory": {"film_id": "767"}, "film": {"title": "Scalawag Duck"}, "COUNT(*)": 32}
+    {"inventory": {"film_id": "382"}, "film": {"title": "Grit Clockwork"}, "COUNT(*)": 32}
+    {"inventory": {"film_id": "1000"}, "film": {"title": "Zorro Ark"}, "COUNT(*)": 31}
     {"inventory": {"film_id": "418"}, "film": {"title": "Hobbit Alien"}, "COUNT(*)": 31}
+    {"inventory": {"film_id": "891"}, "film": {"title": "Timberland Sky"}, "COUNT(*)": 31}
 h. Die 3 meistgesehenen Filmkategorien
 --> Query: Read.java, Z. 331-394
     {"film_category": {"category_id": "15"}, "COUNT(rental᎐rental_id)": 1179}
@@ -111,24 +111,24 @@ Read operations completed
 Update operations started
 a. Vergebt allen Mitarbeitern ein neues, sicheres Passwort
 --> Query: Update.java, Z. 38-39
-    {"_id": {"$oid": "63ab845f3eb3974742f7f33d"}, "staff_id": "1", "first_name": "Mike", "last_name": "Hillyer", "address_id": "3", "email": "Mike.Hillyer@sakilastaff.com", "store_id": "1", "active": "t", "username": "Mike", "password": "dee40d90ce36235b90d0b7286ef3410b476e0aaa", "last_update": "2022-12-27 23:49:42", "picture": "\\x89504e470d0a5a0a"}
-    {"_id": {"$oid": "63ab845f3eb3974742f7f33e"}, "staff_id": "2", "first_name": "Jon", "last_name": "Stephens", "address_id": "4", "email": "Jon.Stephens@sakilastaff.com", "store_id": "2", "active": "t", "username": "Jon", "password": "c03e957ee57aff2bb615a046589b4f16e98c276", "last_update": "2022-12-27 23:49:42", "picture": ""}
+    {"_id": {"$oid": "63ac19b01333656f5423fcba"}, "staff_id": "1", "first_name": "Mike", "last_name": "Hillyer", "address_id": "3", "email": "Mike.Hillyer@sakilastaff.com", "store_id": "1", "active": "t", "username": "Mike", "password": "55e79045959795c9361a866e0d2fb09e4f60bed5", "last_update": "2022-12-28 10:26:48", "picture": "\\x89504e470d0a5a0a"}
+    {"_id": {"$oid": "63ac19b01333656f5423fcbb"}, "staff_id": "2", "first_name": "Jon", "last_name": "Stephens", "address_id": "4", "email": "Jon.Stephens@sakilastaff.com", "store_id": "2", "active": "t", "username": "Jon", "password": "1b4ba0ba411d39f8b165571f471a4c95c832685f", "last_update": "2022-12-28 10:26:48", "picture": ""}
 b. Erzeugt einen neuen Standort (mit einer fiktiven Adresse) und verlegt das Inventar der beiden bisherigen Standorte dorthin
 --> Query: Update.java, Z. 51-70, 77-89
-    {"_id": {"$oid": "63ab845f3eb3974742f7f33f"}, "store_id": "1", "manager_staff_id": "1", "address_id": "1", "last_update": "2006-02-15 09:57:12"}
-    {"_id": {"$oid": "63ab845f3eb3974742f7f340"}, "store_id": "2", "manager_staff_id": "2", "address_id": "2", "last_update": "2006-02-15 09:57:12"}
-    {"_id": {"$oid": "63ab8496a53761ed7047dba3"}, "store_id": "3", "manager_staff_id": "3", "address_id": "3", "last_update": "2022-12-27 23:49:42"}
+    {"_id": {"$oid": "63ac19b01333656f5423fcbc"}, "store_id": "1", "manager_staff_id": "1", "address_id": "1", "last_update": "2006-02-15 09:57:12"}
+    {"_id": {"$oid": "63ac19b01333656f5423fcbd"}, "store_id": "2", "manager_staff_id": "2", "address_id": "2", "last_update": "2006-02-15 09:57:12"}
+    {"_id": {"$oid": "63ac19e8e1f4870c98286af9"}, "store_id": "3", "manager_staff_id": "3", "address_id": "3", "last_update": "2022-12-28 10:26:48"}
     Die ersten 10 Einträge aus inventory:
-    {"_id": {"$oid": "63ab845a3eb3974742f769a2"}, "inventory_id": "1", "film_id": "1", "store_id": "3", "last_update": "2022-12-27 23:49:42"}
-    {"_id": {"$oid": "63ab845a3eb3974742f769a3"}, "inventory_id": "2", "film_id": "1", "store_id": "3", "last_update": "2022-12-27 23:49:42"}
-    {"_id": {"$oid": "63ab845a3eb3974742f769a4"}, "inventory_id": "3", "film_id": "1", "store_id": "3", "last_update": "2022-12-27 23:49:42"}
-    {"_id": {"$oid": "63ab845a3eb3974742f769a5"}, "inventory_id": "4", "film_id": "1", "store_id": "3", "last_update": "2022-12-27 23:49:42"}
-    {"_id": {"$oid": "63ab845a3eb3974742f769a6"}, "inventory_id": "5", "film_id": "1", "store_id": "3", "last_update": "2022-12-27 23:49:42"}
-    {"_id": {"$oid": "63ab845a3eb3974742f769a7"}, "inventory_id": "6", "film_id": "1", "store_id": "3", "last_update": "2022-12-27 23:49:42"}
-    {"_id": {"$oid": "63ab845a3eb3974742f769a8"}, "inventory_id": "7", "film_id": "1", "store_id": "3", "last_update": "2022-12-27 23:49:42"}
-    {"_id": {"$oid": "63ab845a3eb3974742f769a9"}, "inventory_id": "8", "film_id": "1", "store_id": "3", "last_update": "2022-12-27 23:49:42"}
-    {"_id": {"$oid": "63ab845a3eb3974742f769aa"}, "inventory_id": "9", "film_id": "2", "store_id": "3", "last_update": "2022-12-27 23:49:42"}
-    {"_id": {"$oid": "63ab845a3eb3974742f769ab"}, "inventory_id": "10", "film_id": "2", "store_id": "3", "last_update": "2022-12-27 23:49:42"}
+    {"_id": {"$oid": "63ac19ac1333656f5423731f"}, "inventory_id": "1", "film_id": "1", "store_id": "3", "last_update": "2022-12-28 10:26:48"}
+    {"_id": {"$oid": "63ac19ac1333656f54237320"}, "inventory_id": "2", "film_id": "1", "store_id": "3", "last_update": "2022-12-28 10:26:48"}
+    {"_id": {"$oid": "63ac19ac1333656f54237321"}, "inventory_id": "3", "film_id": "1", "store_id": "3", "last_update": "2022-12-28 10:26:48"}
+    {"_id": {"$oid": "63ac19ac1333656f54237322"}, "inventory_id": "4", "film_id": "1", "store_id": "3", "last_update": "2022-12-28 10:26:48"}
+    {"_id": {"$oid": "63ac19ac1333656f54237323"}, "inventory_id": "5", "film_id": "1", "store_id": "3", "last_update": "2022-12-28 10:26:48"}
+    {"_id": {"$oid": "63ac19ac1333656f54237324"}, "inventory_id": "6", "film_id": "1", "store_id": "3", "last_update": "2022-12-28 10:26:48"}
+    {"_id": {"$oid": "63ac19ac1333656f54237325"}, "inventory_id": "7", "film_id": "1", "store_id": "3", "last_update": "2022-12-28 10:26:48"}
+    {"_id": {"$oid": "63ac19ac1333656f54237326"}, "inventory_id": "8", "film_id": "1", "store_id": "3", "last_update": "2022-12-28 10:26:48"}
+    {"_id": {"$oid": "63ac19ac1333656f54237327"}, "inventory_id": "9", "film_id": "2", "store_id": "3", "last_update": "2022-12-28 10:26:48"}
+    {"_id": {"$oid": "63ac19ac1333656f54237328"}, "inventory_id": "10", "film_id": "2", "store_id": "3", "last_update": "2022-12-28 10:26:48"}
 Update operations completed
 
 Delete operations started
