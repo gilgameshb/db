@@ -11,3 +11,7 @@ Docker-Container: Lara Laskowsky
 
 Pfad für die Log-Ausgaben:
 /deployment/deploy/crud_operations/logs/crud.log
+
+Anmerkung:
+Falls er das Netzwerk nicht erstellt, bitte vorab einmal
+"docker network create backend" in der Konsole eingeben
